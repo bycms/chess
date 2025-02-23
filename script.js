@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ];
         initializeChessboard();
         // Start the game by making the first move
-        makeMove('DeepSeek-R1-Distill-Llama-8B');
+        makeMove('Deepseek-v2.5');
     }
 
     function resetGame() {
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
             updateBoard();
             logMove(model, move);
             // Switch to the other model
-            const nextModel = model === 'DeepSeek-R1-Distill-Llama-8B' ? 'deepseek-ai/DeepSeek-R1-Distill-Qwen-7B' : 'DeepSeek-R1-Distill-Llama-8B';
+            const nextModel = model === 'Deepseek-v2.5' ? 'Deepseek-v3' : 'Deepseek-v2.5';
             setTimeout(() => makeMove(nextModel), 1000); // Simulate thinking time
         } else {
             console.error('Invalid move:', move);
@@ -121,7 +121,7 @@ What is your next move?
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: model === 'DeepSeek-R1-Distill-Llama-8B' ? 'deepseek-ai/DeepSeek-R1-Distill-Llama-8B' : 'deepseek-ai/DeepSeek-R1-Distill-Qwen-7B',
+                model: model === 'Deepseek-v2.5' ? 'deepseek-ai/DeepSeek-V2.5' : 'deepseek-ai/DeepSeek-V3',
                 messages: [{ role: 'user', content: prompt }],
                 stream: false,
                 max_tokens: 128,
