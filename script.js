@@ -1,8 +1,13 @@
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const chessboard = document.querySelector('.chessboard');
     const startGameButton = document.getElementById('startGame');
     const resetGameButton = document.getElementById('resetGame');
     const gameLogs = document.getElementById('gameLogs');
+    let model_one = "Qwen/Qwen2.5-7B-Instruct";
+    let model_two = "SeedLLM/Seed-Rice-7B";
+    let history = [];
 
     // Initialize the chessboard with pieces
     let boardState = [
@@ -57,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ];
         initializeChessboard();
         // Start the game by making the first move
-        makeMove('Deepseek-v2.5');
+        makeMove(model_one);
     }
 
     function resetGame() {
@@ -88,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
             updateBoard();
             logMove(model, move);
             // Switch to the other model
-            const nextModel = model === 'Deepseek-v2.5' ? 'Deepseek-v3' : 'Deepseek-v2.5';
+            const nextModel = model === model_one ? model_two : model_one;
             setTimeout(() => makeMove(nextModel), 1000); // Simulate thinking time
         } else {
             console.error('Invalid move:', move);
@@ -107,11 +112,12 @@ You are playing chess. The current board state is:
 ${boardDescription}
 
 Rules:
-1. Pieces: R (Rook), N (Knight), B (Bishop), Q (Queen), K (King), P (Pawn). Uppercase for white, lowercase for black. You are moving the ${model === 'Deepseek-v3' ? 'Upper-case' : 'Lower-case'} pieces.
-2. Moves must follow standard chess rules. Never move a piece to where 
-3. (IMPORTANT) Respond with your move in the format "from [row,col] to [row,col]". For example, "from [1,2] to [3,4]". Please make sure you follow this format, or the compiler might not understand. 
+1. Pieces: R (Rook), N (Knight), B (Bishop), Q (Queen), K (King), P (Pawn). You are moving the ${model === model_two ? 'Upper-case' : 'Lower-case'} pieces.
+2. Moves must follow standard chess rules. For exmaple, you may move a queen from [1,3] to [1,7]  (if empty between), but never to [2,8].
+3. (IMPORTANT) Respond with your move exactly in the format "from [row,col] to [row,col]". For example, "from [1,2] to [3,4]". Please make sure you follow this format, or the compiler might not understand. 
+4. You're given a limited time of 15 seconds to think.
 
-What is your next move?
+${history.length ? `The past steps are as follows: ${history.join(",")}. What's your next move?` : `Take your first move of all.`}
 `;
 
         const options = {
@@ -121,11 +127,11 @@ What is your next move?
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: model === 'Deepseek-v2.5' ? 'deepseek-ai/DeepSeek-V2.5' : 'deepseek-ai/DeepSeek-V3',
+                model: model === model_one ? 'Qwen/Qwen2.5-7B-Instruct' : 'SeedLLM/Seed-Rice-7B',
                 messages: [{ role: 'user', content: prompt }],
                 stream: false,
-                max_tokens: 128,
                 temperature: 0.7,
+                max_token: 128,
                 response_format: { type: 'text' }
             })
         };
@@ -135,6 +141,9 @@ What is your next move?
             const data = await response.json();
             console.log(data);
             const moveText = data?.choices[0].message.content;
+            console.log("<res>" + moveText + "</res>");
+            const thinkText = data?.choices[0].message.reasoning_content;
+            console.log("<think>" + thinkText + "</think>");
             return parseMove(moveText);
         } catch (error) {
             console.error('Error fetching move from AI:', error);
@@ -200,5 +209,6 @@ What is your next move?
             logEntry.textContent = `${model} made an invalid move. ${message}`;
         }
         gameLogs.appendChild(logEntry);
+        history.push(`${model} moved ${move.from} to ${move.to}`);
     }
 });
