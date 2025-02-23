@@ -107,7 +107,7 @@ You are playing chess. The current board state is:
 ${boardDescription}
 
 Rules:
-1. Pieces: R (Rook), N (Knight), B (Bishop), Q (Queen), K (King), P (Pawn). Uppercase for white, lowercase for black. You are moving the ${model === 'Deepseek-v3' ? 'white' : 'black'} pieces.
+1. Pieces: R (Rook), N (Knight), B (Bishop), Q (Queen), K (King), P (Pawn). Uppercase for white, lowercase for black. You are moving the ${model === 'Deepseek-v3' ? 'Upper-case' : 'Lower-case'} pieces.
 2. Moves must follow standard chess rules. Never move a piece to where 
 3. (IMPORTANT) Respond with your move in the format "from [row,col] to [row,col]". For example, "from [1,2] to [3,4]". Please make sure you follow this format, or the compiler might not understand. 
 
