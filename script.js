@@ -111,11 +111,23 @@ document.addEventListener('DOMContentLoaded', () => {
 You are playing chess. The current board state is:
 ${boardDescription}
 
-Rules:
+Instructions:
 1. Pieces: R (Rook), N (Knight), B (Bishop), Q (Queen), K (King), P (Pawn). You are moving the ${model === model_two ? 'Upper-case' : 'Lower-case'} pieces.
 2. Moves must follow standard chess rules. For exmaple, you may move a queen from [1,3] to [1,7]  (if empty between), but never to [2,8].
 3. (IMPORTANT) Respond with your move exactly in the format "from [row,col] to [row,col]". For example, "from [1,2] to [3,4]". Please make sure you follow this format, or the compiler might not understand. 
 4. You're given a limited time of 15 seconds to think.
+
+Rules of Movements:
+King: Moves one square in any direction.
+Queen: Moves any number of squares in any direction.
+Rook: Moves any number of squares horizontally or vertically.
+Bishop: Moves any number of squares diagonally.
+Knight: Moves in an "L" shape (two squares in one direction and then one square perpendicular).
+Pawn: Moves forward one square, captures diagonally, and can move two squares on its first move.
+Special Moves:
+Castling: The king moves two squares toward a rook, and the rook moves to the square next to the king.
+En Passant: If a pawn moves two squares forward and lands beside an opponent's pawn, the opponent can capture it as if it had moved only one square.
+Promotion: When a pawn reaches the opponent's back rank, it can be promoted to any other piece (except a king).
 
 ${history.length ? `The past steps are as follows: ${history.join(",")}. What's your next move?` : `Take your first move of all.`}
 `;
