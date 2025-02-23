@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const resetGameButton = document.getElementById('resetGame');
     const gameLogs = document.getElementById('gameLogs');
     let model_one = "Qwen/Qwen2.5-7B-Instruct";
-    let model_two = "internlm/internlm2_5-7b-chat";
+    let model_two = "deepseek-ai/Deepseek-V2.5";
     let history = [];
 
     // Initialize the chessboard with pieces
@@ -127,7 +127,7 @@ ${history.length ? `The past steps are as follows: ${history.join(",")}. What's 
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: model === model_one ? 'Qwen/Qwen2.5-7B-Instruct' : 'internlm/internlm2_5-7b-chat',
+                model: model === model_one ? 'Qwen/Qwen2.5-7B-Instruct' : 'deepseek-ai/Deepseek-V2.5',
                 messages: [{ role: 'user', content: prompt }],
                 stream: false,
                 temperature: 0.7,
