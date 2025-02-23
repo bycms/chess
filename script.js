@@ -124,6 +124,9 @@ Rook: Moves any number of squares horizontally or vertically.
 Bishop: Moves any number of squares diagonally.
 Knight: Moves in an "L" shape (two squares in one direction and then one square perpendicular).
 Pawn: Moves forward one square, captures diagonally, and can move two squares on its first move.
+
+Pieces with different cases may cover each other to eliminate the bottom one (like N covering a b), but those with the same case should never cover (like P not covering an R). 
+No pieces are allowed to fly over another during their movements (except knights) e.g. a Q [1,3] cannot go to [4,3] if there's any piece on [3,3].
 Special Moves:
 Castling: The king moves two squares toward a rook, and the rook moves to the square next to the king.
 En Passant: If a pawn moves two squares forward and lands beside an opponent's pawn, the opponent can capture it as if it had moved only one square.
